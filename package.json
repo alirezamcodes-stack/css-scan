@@ -1,0 +1,13 @@
+{
+  "name": "stylescan-ultra",
+  "version": "0.2.0",
+  "private": true,
+  "description": "A local Chrome CSS inspection and editing extension",
+  "scripts": {
+    "check": "node --check background.js && node --check src/engine.js && node --check src/content.js && node --check popup.js && node --check options.js",
+    "test": "node --test-isolation=none --test tests/engine.test.js",
+    "test:chrome": "node tests/smoke-test.mjs",
+    "package:zip": "pwsh -File scripts/package.ps1"
+  },
+  "engines": { "node": ">=24" }
+}

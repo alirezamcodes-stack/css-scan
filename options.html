@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Settings · StyleScan Ultra</title>
+    <link rel="stylesheet" href="options.css" />
+    <script src="options.js" defer></script>
+  </head>
+  <body data-theme="dark">
+    <div class="page">
+      <header class="page-header">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"><span></span></span>
+          <div><strong>StyleScan <em>Ultra</em></strong><small>Settings</small></div>
+        </div>
+        <span class="edition">FREE EDITION</span>
+      </header>
+
+      <main>
+        <div class="intro">
+          <div class="intro-copy">
+            <span class="eyebrow">MAKE IT YOURS</span>
+            <h1>Inspector settings</h1>
+            <p>Choose how StyleScan highlights elements and prepares CSS. Changes are saved automatically across your Chrome profile.</p>
+          </div>
+          <div class="intro-decoration" aria-hidden="true"><span class="bracket">{</span><span class="code-line line-1"></span><span class="code-line line-2"></span><span class="code-line line-3"></span><span class="bracket">}</span></div>
+        </div>
+
+        <form id="settings-form" autocomplete="off">
+          <div class="settings-grid">
+            <section class="card" aria-labelledby="appearance-heading">
+              <div class="card-header"><span class="card-icon" aria-hidden="true">◉</span><div><span class="eyebrow">01 / APPEARANCE</span><h2 id="appearance-heading">Inspection overlay</h2></div></div>
+              <div class="setting-row">
+                <div><label for="theme">Panel theme</label><p>Choose the theme for the on-page inspector.</p></div>
+                <select id="theme" name="theme"><option value="dark">Dark</option><option value="light">Light</option></select>
+              </div>
+              <div class="setting-row">
+                <div><label for="showDimensions">Element dimensions</label><p>Show width and height while inspecting.</p></div>
+                <input class="switch" id="showDimensions" name="showDimensions" type="checkbox" />
+              </div>
+              <div class="setting-row">
+                <div><label for="showGuides">Alignment guides</label><p>Draw guides around the selected element.</p></div>
+                <input class="switch" id="showGuides" name="showGuides" type="checkbox" />
+              </div>
+            </section>
+
+            <section class="card" aria-labelledby="capture-heading">
+              <div class="card-header"><span class="card-icon" aria-hidden="true">⌘</span><div><span class="eyebrow">02 / CAPTURE</span><h2 id="capture-heading">CSS extraction</h2></div></div>
+              <div class="setting-row">
+                <div><label for="copyMode">CSS output</label><p>Choose the source for copied declarations.</p></div>
+                <select id="copyMode" name="copyMode"><option value="matched">Matched rules</option><option value="computed">Computed styles</option></select>
+              </div>
+              <div class="setting-row">
+                <div><label for="includePseudo">Pseudo-elements</label><p>Include ::before and ::after styles when available.</p></div>
+                <input class="switch" id="includePseudo" name="includePseudo" type="checkbox" />
+              </div>
+              <div class="setting-row">
+                <div><label for="includeMedia">Media queries</label><p>Include matching media rules from accessible stylesheets.</p></div>
+                <input class="switch" id="includeMedia" name="includeMedia" type="checkbox" />
+              </div>
+            </section>
+
+            <section class="card card-wide" aria-labelledby="workflow-heading">
+              <div class="card-header"><span class="card-icon" aria-hidden="true">↗</span><div><span class="eyebrow">03 / WORKFLOW</span><h2 id="workflow-heading">Copy behavior</h2></div></div>
+              <div class="setting-row">
+                <div><label for="autoCopy">Copy on selection</label><p>Copy CSS when you click an element during inspection.</p></div>
+                <input class="switch" id="autoCopy" name="autoCopy" type="checkbox" />
+              </div>
+              <div class="setting-row descendant-row">
+                <div><label for="maxDescendants">Component size limit</label><p>Maximum descendants included when copying a component. Higher values can take longer on complex pages.</p></div>
+                <div class="range-control"><output id="descendant-value" for="maxDescendants">120</output><input id="maxDescendants" name="maxDescendants" type="range" min="0" max="500" step="10" value="120" aria-describedby="descendant-hint" /><small id="descendant-hint">elements</small></div>
+              </div>
+            </section>
+          </div>
+          <div class="form-footer"><p id="save-status" role="status" aria-live="polite">Loading settings…</p><button id="reset-settings" class="reset-button" type="button">Restore defaults</button></div>
+        </form>
+      </main>
+      <footer class="page-footer"><span>StyleScan Ultra</span><span>Built for curious developers.</span></footer>
+    </div>
+  </body>
+</html>

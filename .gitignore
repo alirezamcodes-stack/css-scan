@@ -1,0 +1,4 @@
+dist/
+.chrome-smoke/
+node_modules/
+*.log

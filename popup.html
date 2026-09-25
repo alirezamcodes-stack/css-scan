@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>StyleScan Ultra</title>
+    <link rel="stylesheet" href="popup.css" />
+    <script src="popup.js" defer></script>
+  </head>
+  <body>
+    <main class="popup">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"><span></span></span>
+          <div>
+            <strong>StyleScan <em>Ultra</em></strong>
+            <span class="eyebrow">CSS inspection studio</span>
+          </div>
+        </div>
+        <span class="version">FREE</span>
+      </header>
+
+      <section class="hero" aria-labelledby="inspector-heading">
+        <div class="hero-top">
+          <div>
+            <span class="section-label">INSPECTOR</span>
+            <h1 id="inspector-heading">Scan this page</h1>
+            <p id="inspector-description">Preparing your inspector…</p>
+          </div>
+          <button id="power-toggle" class="power-toggle" type="button" role="switch" aria-label="Enable inspector for this tab" aria-checked="false" disabled>
+            <span class="toggle-thumb"></span>
+          </button>
+        </div>
+        <div class="site-line">
+          <span class="site-indicator" aria-hidden="true"></span>
+          <span id="site-name" class="site-name">Current tab</span>
+          <span id="site-state" class="site-state">Checking</span>
+        </div>
+      </section>
+
+      <section class="actions" aria-labelledby="actions-heading">
+        <div class="section-heading">
+          <h2 id="actions-heading">Quick actions</h2>
+          <span>Selected element</span>
+        </div>
+        <button id="copy-css" class="action-button" type="button" disabled>
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4H6a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2"/><path d="M10 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2Z"/><path d="m13 7-2 2 2 2m3-4 2 2-2 2"/></svg>
+          </span>
+          <span class="action-copy"><strong>Copy CSS</strong><small>Rules for the selected element</small></span>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </button>
+        <button id="copy-component" class="action-button" type="button" disabled>
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 9v12m4-8 2 2-2 2"/></svg>
+          </span>
+          <span class="action-copy"><strong>Copy component</strong><small>HTML and scoped CSS</small></span>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </button>
+      </section>
+
+      <div class="tip"><span class="tip-icon" aria-hidden="true">✦</span><p>Enable the inspector, then click an element on the page to select it.</p></div>
+
+      <footer class="footer">
+        <span class="local-note"><span aria-hidden="true">●</span> Runs locally in your browser</span>
+        <button id="open-options" type="button">Settings <span aria-hidden="true">↗</span></button>
+      </footer>
+      <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+    </main>
+  </body>
+</html>
