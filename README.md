@@ -1,54 +1,56 @@
 # StyleScan Ultra
 
-یک افزونهٔ مستقل و رایگان برای بررسی و ویرایش CSS در Chrome. روی صفحه‌ای که خودتان انتخاب می‌کنید اجرا می‌شود، CSS قابل‌دسترسی را می‌خواند و نتیجه را همان‌جا نشان می‌دهد.
+Eine eigenständige und kostenlose Chrome-Erweiterung zum Untersuchen und Bearbeiten von CSS. Sie läuft auf der von Ihnen ausgewählten Seite, liest zugängliches CSS aus und zeigt die Ergebnisse direkt dort an.
 
-## نصب در Chrome
+## Installation in Chrome
 
-1. این پوشه را در رایانه نگه دارید.
-2. در Chrome نشانی `chrome://extensions` را باز کنید.
-3. **Developer mode** را روشن کنید.
-4. **Load unpacked** را بزنید و همین پوشه را انتخاب کنید.
-5. یک صفحهٔ عادی `http` یا `https` باز کنید، روی آیکون افزونه بزنید و Inspector را فعال کنید.
+1. Speichern Sie diesen Ordner auf Ihrem Computer.
+2. Öffnen Sie in Chrome die Adresse `chrome://extensions`.
+3. Aktivieren Sie den **Entwicklermodus**.
+4. Klicken Sie auf **Entpackte Erweiterung laden** und wählen Sie diesen Ordner aus.
+5. Öffnen Sie eine normale `http`- oder `https`-Seite, klicken Sie auf das Erweiterungssymbol und aktivieren Sie den Inspector.
 
-برای نصب محلی نیازی به حساب، سرور یا خرید CSS Scan نیست. پس از هر تغییر در فایل‌های افزونه، در `chrome://extensions` دکمهٔ Reload را بزنید و صفحهٔ وبِ در حال بررسی را نیز بازنشانی کنید.
+Für die lokale Installation sind weder ein Konto noch ein Server oder der Kauf von CSS Scan erforderlich. Nach Änderungen an den Erweiterungsdateien klicken Sie unter `chrome://extensions` auf **Neu laden** und laden Sie anschließend auch die untersuchte Webseite neu.
 
-## استفاده
+## Verwendung
 
-- نشانگر را روی عنصر ببرید تا کادر و CSS آن دیده شود؛ کلیک، عنصر را سنجاق می‌کند.
-- در **Inspect** بین قواعد اصلی قابل‌خواندن و مقادیر محاسبه‌شده جابه‌جا شوید. بخش **Cascade diagnostics** نام قاعده، منبع، اولویت selector و وضعیت تقریبی هر declaration را نشان می‌دهد. CSS، HTML یا مؤلفهٔ HTML+CSS را کپی کنید.
-- در **Visual** ویژگی‌ها را تغییر دهید و نتیجه را زنده ببینید.
-- در **DOM** با عناصر والد، فرزند و هم‌سطح حرکت کنید.
-- در **Tokens** رنگ‌ها، فونت‌ها، متغیرهای CSS و تصاویر داخل عنصر را ببینید.
-- در **Changes** تغییرات را برگردانید یا CSS و JSON را خروجی بگیرید.
-- کلیدهای میانبر هنگام فعال بودن ابزار: `Space` سنجاق/رها، `P` توقف/ادامه، جهت‌ها حرکت در DOM هنگام سنجاق بودن، `Esc` بستن. `Alt+Shift+S` پنجرهٔ افزونه را باز می‌کند.
+- Bewegen Sie den Mauszeiger über ein Element, um dessen Rahmen und CSS anzuzeigen; ein Klick fixiert das Element.
+- Unter **Inspect** können Sie zwischen lesbaren Originalregeln und berechneten Werten wechseln. **Cascade diagnostics** zeigt Regelname, Quelle, Selector-Spezifität und den ungefähren Status jeder Deklaration. Sie können CSS, HTML oder eine HTML+CSS-Komponente kopieren.
+- Unter **Visual** können Sie Eigenschaften ändern und das Ergebnis live sehen.
+- Unter **DOM** können Sie zwischen Eltern-, Kind- und Geschwisterelementen navigieren.
+- Unter **Tokens** sehen Sie Farben, Schriftarten, CSS-Variablen und Bilder innerhalb des Elements.
+- Unter **Changes** können Sie Änderungen zurücksetzen oder CSS bzw. JSON exportieren.
+- Tastenkürzel bei aktivem Werkzeug: `Space` zum Fixieren/Lösen, `P` zum Pausieren/Fortsetzen, Pfeiltasten zur DOM-Navigation bei fixiertem Element, `Esc` zum Schließen. `Alt+Shift+S` öffnet das Erweiterungsfenster.
 
-## دقت و محدودیت‌ها
+## Genauigkeit und Einschränkungen
 
-StyleScan Ultra قواعد CSS اصلی را از CSSOM می‌خواند و مقادیر نوشته‌شده را در صورت دسترسی حفظ می‌کند. بعضی stylesheetهای دامنهٔ دیگر یا ساختارهای خاص مرورگر اجازهٔ خواندن قواعد را نمی‌دهند؛ در این حالت مقدار محاسبه‌شده را نشان می‌دهد و هشدار می‌دهد. کپی مؤلفه برای فرزندان از snapshot محاسبه‌شده استفاده می‌کند. بنابراین خروجی روی همهٔ سایت‌ها لزوماً معادل سورس اولیه نیست.
+StyleScan Ultra liest originale CSS-Regeln über die CSSOM und behält geschriebene Werte bei, sofern sie zugänglich sind. Manche Stylesheets aus anderen Domains oder bestimmte Browserstrukturen erlauben keinen Zugriff auf Regeln; in diesem Fall zeigt die Erweiterung den berechneten Wert an und weist darauf hin. Beim Kopieren einer Komponente werden für Kind-Elemente berechnete Snapshots verwendet. Daher entspricht die Ausgabe nicht auf jeder Website exakt dem ursprünglichen Quellcode.
 
-وضعیت **candidate** در Cascade diagnostics فقط قوی‌ترین declaration در میان قواعد author قابل‌خواندن است و تضمین نمی‌کند همان مقدار نهایی مرورگر باشد. هنگام نامشخص‌بودن اولویت، مثلاً در بعضی لایه‌ها، scopeها، container queryها یا shorthandها، وضعیت **unknown** نشان داده می‌شود.
+Der Status **candidate** in Cascade diagnostics bezeichnet lediglich die stärkste Deklaration unter den lesbaren Author-Regeln und garantiert nicht, dass dies tatsächlich der finale Browserwert ist. Wenn die Priorität nicht eindeutig bestimmt werden kann, etwa bei bestimmten Layers, Scopes, Container Queries oder Shorthands, wird der Status **unknown** angezeigt.
 
-Chrome اجازهٔ اجرای افزونه در صفحه‌های داخلی مثل `chrome://` یا در Chrome Web Store را نمی‌دهد. ویرایش‌های زنده تا بازنشانی صفحه باقی می‌مانند؛ برای نگهداری آن‌ها از بخش Changes خروجی بگیرید. تبدیل Tailwind یک تبدیل اولیه از ویژگی‌های رایج است و باید بررسی شود.
+Chrome erlaubt die Ausführung der Erweiterung nicht auf internen Seiten wie `chrome://` oder im Chrome Web Store. Live-Änderungen bleiben nur bis zum Neuladen der Seite bestehen; verwenden Sie den Bereich **Changes**, um sie zu exportieren. Die Tailwind-Konvertierung ist eine grundlegende Umsetzung häufiger Eigenschaften und sollte anschließend überprüft werden.
 
-## حریم خصوصی
+## Datenschutz
 
-افزونه فقط بعد از بازکردن پنجرهٔ آن و فقط در تب فعال تزریق می‌شود. هیچ محتوای صفحه، CSS یا دادهٔ دیگری به سرور ارسال نمی‌کند. تنظیمات در `chrome.storage.sync` ذخیره می‌شوند. خروجی CodePen و قابلیت ابری عمداً در نسخهٔ محلی وجود ندارند.
+Die Erweiterung wird erst nach dem Öffnen ihres Fensters und ausschließlich im aktiven Tab injiziert. Es werden keine Seiteninhalte, CSS-Daten oder sonstigen Informationen an einen Server gesendet. Einstellungen werden in `chrome.storage.sync` gespeichert. CodePen-Export und Cloud-Funktionen sind in der lokalen Version bewusst nicht enthalten.
 
-## ساختار پروژه
+## Projektstruktur
 
-- `manifest.json`: مجوزها و تنظیمات Manifest V3
-- `background.js`: تزریق افزونه فقط در تب فعال
-- `src/engine.js`: استخراج CSS، pseudo-element، media query و HTML امن
-- `src/content.js` و `src/overlay.css`: ابزار روی صفحه
-- `popup.*`: کنترل سریع افزونه
-- `options.*`: تنظیمات
-- `icons/`: آیکون‌های افزونه
-- `PLAN.md`: معماری و مسیر توسعه
+- `manifest.json`: Berechtigungen und Manifest-V3-Konfiguration
+- `background.js`: injiziert die Erweiterung ausschließlich in den aktiven Tab
+- `src/engine.js`: CSS-Extraktion, Pseudo-Elemente, Media Queries und sicheres HTML
+- `src/content.js` und `src/overlay.css`: Werkzeuge auf der Seite
+- `popup.*`: Schnellsteuerung der Erweiterung
+- `options.*`: Einstellungen
+- `icons/`: Erweiterungssymbole
+- `PLAN.md`: Architektur und Entwicklungsplanung
 
-## بررسی
+## Überprüfung
 
-خود افزونه برای اجرا به Node یا نصب پکیج نیاز ندارد. برای توسعه و آزمون، Node 24 یا جدیدتر را نصب کنید و `npm run check` و `npm test` را اجرا کنید. آزمون یکپارچه فقط با **Google Chrome for Testing** اجرا می‌شود: مسیر `chrome.exe` آن را در متغیر `STYLESCAN_CHROME` بگذارید و `npm run test:chrome` را اجرا کنید. این آزمون از یک پروفایل موقت استفاده می‌کند. نسخه‌های جدید Google Chrome بارگذاری افزونه با پرچم خط فرمان را نمی‌پذیرند، ولی نصب دستی از **Load unpacked** همچنان پشتیبانی می‌شود.
+Die Erweiterung selbst benötigt weder Node.js noch installierte Pakete zur Ausführung. Für Entwicklung und Tests installieren Sie Node.js 24 oder neuer und führen Sie `npm run check` sowie `npm test` aus.
 
-اگر سیاست‌های رایانه مانع اجرای فرایندهای sandbox مرورگر در آزمون موقت شد، می‌توان فقط برای همان آزمون `STYLESCAN_TEST_NO_SANDBOX=1` را تنظیم کرد. این گزینه در اجرای معمول افزونه استفاده نمی‌شود.
+Der Integrationstest wird ausschließlich mit **Google Chrome for Testing** ausgeführt: Hinterlegen Sie den Pfad zu `chrome.exe` in der Umgebungsvariable `STYLESCAN_CHROME` und starten Sie anschließend `npm run test:chrome`. Der Test verwendet ein temporäres Profil. Neuere Versionen von Google Chrome akzeptieren das Laden von Erweiterungen per Kommandozeilen-Flag nicht mehr; die manuelle Installation über **Entpackte Erweiterung laden** wird weiterhin unterstützt.
 
-برای بسته‌بندی، `npm run package:zip` یا `scripts/package.ps1` یک ZIP از فایل‌های لازم می‌سازد. برای به‌روزرسانی نسخهٔ محلی، فایل‌ها را جایگزین کنید و افزونه را در `chrome://extensions` Reload کنید. تغییرات هر نسخه در `CHANGELOG.md` ثبت می‌شود.
+Falls Richtlinien auf dem Computer verhindern, dass Browser-Sandbox-Prozesse während des temporären Tests ausgeführt werden, kann ausschließlich für diesen Test `STYLESCAN_TEST_NO_SANDBOX=1` gesetzt werden. Diese Option wird beim normalen Betrieb der Erweiterung nicht verwendet.
+
+Zum Paketieren erzeugen `npm run package:zip` oder `scripts/package.ps1` eine ZIP-Datei mit den benötigten Dateien. Für ein lokales Update ersetzen Sie die Dateien und laden die Erweiterung unter `chrome://extensions` neu. Änderungen jeder Version werden in `CHANGELOG.md` dokumentiert.
