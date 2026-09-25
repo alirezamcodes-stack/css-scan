@@ -1,58 +1,71 @@
 # AGENTS.md
 
-## Project context
+## Required context
 
-StyleScan Ultra is a local-first Manifest V3 Chrome extension for CSS inspection and editing.
+StyleScan Ultra is a free, local-first Manifest V3 Chrome CSS inspector/editor.
 
-Before implementing or changing product behavior, read:
+Before changing product behavior, read:
 
 1. `PLAN.md`
 2. `docs/research.md`
 3. `docs/roadmap.md`
-4. Relevant source files and tests
+4. the relevant implementation and tests
 
-Treat these documents as project context, not as a substitute for inspecting the current code.
+The research/roadmap describe the target. The current repository is the source of truth for what is already implemented. Do not rewrite working features just because the target architecture differs.
 
-## Working rules
+## Non-negotiable engineering rules
 
-- Prefer small, reviewable changes over broad rewrites.
-- Preserve the local-only/no-backend architecture unless the task explicitly changes that decision.
-- Keep Chrome permissions minimal and justified.
-- Do not fabricate CSS provenance. If CSSOM access is unavailable, use computed fallback with an explicit limitation/warning.
-- Cascade diagnostics must be conservative: use an unknown/uncertain state when the engine cannot prove a result.
-- Route live edits through a reversible mutation/history model so undo, reset, and export stay consistent.
-- Use a controlled stylesheet/rule layer for pseudo-state or responsive edits that cannot be represented correctly with inline styles.
-- Keep the inspector isolated from host-page CSS and clean up listeners, observers, style nodes, highlights, and timers on teardown.
-- Avoid expensive full-document work on pointer movement.
+- Keep the core inspector local-first and backend-free.
+- Keep Chrome permissions minimal. Do not add permanent `<all_urls>` or `debugger` without an explicit scoped task.
+- Keep Applied/Authored CSS separate from Computed CSS.
+- Never fabricate CSS provenance, original units, selectors, conditions, or source files when CSSOM data is inaccessible.
+- Cascade claims must be conservative. Prefer UNKNOWN/uncertain over an incorrect winner.
+- Do not use regex-only specificity logic for Selectors Level 4.
+- Do not rescan all stylesheets on every pointer event.
+- Keep pointer/overlay work lightweight and frame-gated.
+- Keep inspector UI isolated from host-page CSS and clean up all runtime artifacts on teardown.
+- Use reversible edit transactions so undo/reset/export match actual page state.
+- Use controlled generated rules for pseudo-state/responsive edits that cannot be represented correctly inline.
+- Sanitize component export. Never export password/form values, page scripts, inline event handlers, cookies, storage, or authorization data.
+- No remote executable code, `eval()`, `new Function()`, or unsafe page-controlled `innerHTML`.
+- Do not copy proprietary code/assets/UI from CSS Peeper, CSS Scan, or CSS Pro.
+- Do not copy SnappySnippet GPL code into this project.
+- If third-party MIT/Apache code is actually reused, preserve required license/provenance notices.
+
+## Scope discipline
+
+For a roadmap task such as `P0-06`:
+
+1. Read the task and relevant research section.
+2. Inspect current code/tests first.
+3. Identify what is already implemented.
+4. Make the smallest architecture-compatible change that closes the actual gap.
+5. Add regression tests where practical.
+6. Run verification.
+7. Report changed files, test results, and remaining limitations.
+8. Do not mark unrelated roadmap items complete.
 
 ## Verification
 
-For normal code changes run:
+For normal changes:
 
 ```bash
 npm run check
 npm test
 ```
 
-When behavior depends on real Chrome execution, also run:
+For changes dependent on real Chrome behavior:
 
 ```bash
 npm run test:chrome
 ```
 
-The Chrome integration test requires the repository's documented Chrome for Testing setup.
+When the documented Chrome-for-Testing environment is unavailable, report that fact; do not claim the browser test passed.
 
-When fixing engine/cascade/editing bugs, add a regression test whenever practical.
+## Product order
 
-## Scope discipline
+Unless a scoped task says otherwise, prioritize:
 
-When given a roadmap item such as `P0-03`:
+**Picker → Applied CSS → Computed CSS → Selector/Specificity → Copy → Accessibility → Export → Design-system analysis → Visual editing → optional CDP/AI**
 
-1. Locate that item in `docs/roadmap.md`.
-2. Inspect the relevant implementation and tests.
-3. State a short implementation plan.
-4. Implement only the necessary supporting changes.
-5. Run the relevant verification commands.
-6. Report changed files, test results, and any remaining technical limitation.
-
-Do not mark unrelated roadmap work complete.
+The highest-risk core area is accurate Applied CSS/cascade reasoning.
