@@ -1,80 +1,180 @@
-# StyleScan Ultra — Agent Roadmap
+# StyleScan Ultra — Research-Based Roadmap
 
-This roadmap converts `PLAN.md` and `docs/research.md` into implementation-oriented work. Agents should work on one scoped item at a time and verify the repository before marking an item complete.
+This roadmap is derived from the 2026-09-25 research report. It replaces the earlier provisional roadmap.
 
-## P0 — correctness and reliability
+The repository already implements parts of several items. Before coding, inspect current behavior and tests; do not rebuild working features solely because they appear below.
 
-### P0-01 — Cascade regression coverage
-- Expand engine fixtures for specificity, source order, `!important`, inactive conditional rules, inheritance, and shorthand/longhand interactions.
-- Assert conservative `unknown` behavior where the engine cannot prove the winner.
-- Do not change UI labels merely to make tests pass.
+## P0 — professional core / MVP
 
-### P0-02 — Cross-origin/computed fallback audit
-- Audit every fallback path from CSSOM to computed styles.
-- Ensure provenance/warnings remain visible in returned data.
-- Ensure computed values are never labeled as authored declarations.
+### P0-01 — Repository and architecture audit
+- Map current JavaScript modules to the target boundaries in `docs/research.md`.
+- Refactor only where it reduces coupling or enables later tests/features.
+- Evaluate TypeScript + WXT or Vite/CRXJS migration separately; do not perform a wholesale toolchain rewrite without a scoped task.
 
-### P0-03 — Edit transaction model
-- Review live edit/history code as a transaction: previous value, requested value, accepted value, and removal state.
-- Reject invalid CSS values before committing history where possible.
-- Ensure undo/reset and exported Changes agree with the actual page state.
+### P0-02 — High-performance picker and overlay
+- Use a `requestAnimationFrame`-gated pointer path.
+- Cache the last target.
+- Keep rect/layout reads bounded.
+- Defer expensive CSS analysis.
+- Ensure activation/deactivation cleans up all listeners, observers, highlights, timers, and generated styles.
 
-### P0-04 — Inspector lifecycle cleanup
-- Audit activation/deactivation for event listeners, observers, temporary style nodes, highlights, and timers.
-- Ensure repeated open/close cycles do not duplicate handlers or UI.
-- Add a regression test where practical.
+### P0-03 — Production selector generator
+- Generate stable candidates and verify uniqueness.
+- Use `CSS.escape()`.
+- Penalize unstable/hash-like classes.
+- Use `:nth-of-type()` only as fallback.
+- Represent Shadow DOM with root-by-root selector paths instead of fake cross-root selectors.
+- Add selector fixtures.
 
-## P1 — deeper editing
+### P0-04 — Separate Applied/Authored and Computed models
+- Keep authored CSS and `getComputedStyle()` snapshots as separate data models and UI concepts.
+- Preserve source/provenance and original authored values where accessible.
+- Mark cross-origin/inaccessible stylesheet data explicitly.
+- Never label computed fallback as original/authored CSS.
 
-### P1-01 — Controlled rule layer
-- Introduce or formalize a dedicated generated stylesheet/rule layer for edits that cannot be represented safely as inline styles.
-- Keep generated rules attributable and removable.
+### P0-05 — CSSOM rule index and condition model
+- Index stylesheets once per activation/cache lifecycle.
+- Recursively traverse relevant nested rules.
+- Preserve media/supports/container/layer context.
+- Add targeted cache invalidation for dynamic styles.
+- Do not abort when one stylesheet is inaccessible.
 
-### P1-02 — Pseudo-state editing
-- Add explicit editing for `:hover` and `:focus` first.
-- Build on the controlled rule layer rather than mutating unrelated inline styles.
-- Make reset/export behavior deterministic.
+### P0-06 — Selectors Level 4 specificity
+- Replace/avoid regex-only specificity logic.
+- Correctly cover `:is()`, `:not()`, `:has()`, `:where()`, and `:nth-child(... of S)`.
+- Store specificity as a tuple.
+- Add direct regression fixtures.
 
-### P1-03 — Responsive editing
-- Represent viewport/media-specific edits explicitly.
-- Preserve the media condition in exported CSS.
-- Avoid pretending responsive edits are global inline changes.
+### P0-07 — Conservative cascade diagnostics
+- Model importance/origin, layer where available, conditions, specificity, source order, inline declarations, and relevant shorthand/longhand interactions.
+- Expose clear states such as APPLIED, OVERRIDDEN, INACTIVE CONDITION, INLINE, COMPUTED, and UNKNOWN.
+- Use UNKNOWN whenever the implementation cannot prove the result.
 
-### P1-04 — Visual editor depth
-- Improve backgrounds, borders, shadows, transforms, flex, and grid controls.
-- Reuse the same validated mutation/history path as code edits.
+### P0-08 — Inspector information architecture
+- Keep fast hover/pin workflow.
+- Provide grouped views for Applied, Computed, Layout, and Accessibility.
+- Keep typography/colors/box-model information grouped instead of dumping hundreds of properties.
+- Preserve keyboard navigation and visible focus.
+- Keep inspector UI isolated in Shadow DOM.
 
-## P2 — export and workflow
+### P0-09 — Copy and local export
+- Copy selector, declaration, and full rule.
+- Export CSS and JSON locally.
+- Give concise copy feedback.
+- Do not introduce cloud dependency.
 
-### P2-01 — Component export minimization
-- Reduce redundant computed declarations.
-- Preserve useful CSS variables where they are available and safe.
-- Keep an explicit warning when exact authored source cannot be reconstructed.
+### P0-10 — Contrast and basic accessibility
+- Show element-level contrast where it can be computed reliably.
+- Use WCAG 2.2 thresholds as documented in `docs/research.md`.
+- Present results as automated findings, never as a claim of full WCAG conformance.
+- Test keyboard-only operation, focus order/visibility, zoom, and reduced motion.
 
-### P2-02 — Shadow DOM/export edge cases
-- Add fixtures for open Shadow DOM where supported by the current architecture.
-- Fail clearly for inaccessible structures rather than producing misleading output.
+### P0-11 — Editing transaction reliability
+- Route live edits through reversible transactions.
+- Track previous/requested/accepted/removal state.
+- Do not record rejected CSS as successful.
+- Keep undo/reset/Changes/export synchronized with actual page state.
 
-### P2-03 — Responsive comparison workflow
-- Add viewport presets/comparison only after responsive editing state is stable.
-- Keep inspection performance acceptable during viewport changes.
+### P0-12 — Performance and edge-case benchmarks
+- Cache stylesheet/rule metadata and repeated element analysis.
+- Add large-DOM and many-rule fixtures.
+- Add dynamic-style invalidation tests.
+- Avoid full stylesheet parsing on pointer movement.
 
-### P2-04 — Local snippets and design tokens
-- Improve reusable local snippets and token browsing without introducing a backend.
-- Keep storage schema versioned if persisted data shape changes.
+### P0-13 — Test foundation
+- Expand unit fixtures for selector, specificity, cascade, computed diff, serializer, contrast, export sanitization, Shadow DOM, and failure cases.
+- Expand Chrome/browser E2E fixtures listed in `docs/research.md`.
+- Keep existing `npm run check`, `npm test`, and browser smoke verification working.
 
-## Verification gate for every task
+### P0-14 — Store/privacy/release readiness
+- Audit permissions and keep them minimal.
+- Audit built artifacts for remote executable code and unsafe constructs.
+- Add/maintain privacy, license, provenance, and store documentation as needed before publication.
+- Test clean install, upgrade, Chrome Stable, and complex pages.
+- Produce reproducible release ZIP/checksum when release automation is introduced.
 
-Before completion:
+## P1 — differentiation after the core is reliable
 
-1. `npm run check`
-2. `npm test`
-3. `npm run test:chrome` when the change depends on actual Chrome behavior
-4. Update tests and documentation affected by the change
-5. Confirm no secrets, credentials, generated profiles, or local machine paths were added
+### P1-01 — Safe HTML+CSS component export
+- Sanitize scripts, inline event handlers, form/password values, and runtime-sensitive data.
+- Export only the structure/CSS needed for the selected component where practical.
+- Clearly state reconstruction limitations.
 
-## Task execution format
+### P1-02 — Pseudo-elements, pseudo-states, and condition explorer
+- Improve authored/computed `::before` and `::after` mapping.
+- Preserve pseudo selectors and conditions.
+- Add `:hover`/`:focus`/`:active` editing only through a controlled rule/state model.
+- Add media/container-condition exploration.
 
-For agent-driven work, use a narrow instruction such as:
+### P1-03 — Design-system analysis
+- Build global/local color inventory.
+- Build typography inventory.
+- Extract CSS custom properties/design tokens.
+- Reuse stylesheet/DOM indexes rather than rescanning unnecessarily.
 
-> Implement P0-03 from `docs/roadmap.md`. Read `AGENTS.md`, `PLAN.md`, and `docs/research.md` first. Inspect the current implementation, make the smallest architecture-compatible change, run the relevant verification gates, and summarize changed files plus remaining limitations.
+### P1-04 — Shadow DOM and iframe hardening
+- Improve open Shadow Root traversal and explicit limitation reporting.
+- Add same-origin and cross-origin frame fixtures.
+- Keep permission/messaging implications explicit.
+
+### P1-05 — Responsive presets
+- Add viewport presets/comparison without claiming full device emulation.
+- Preserve responsive/media context in inspection and export.
+
+### P1-06 — Asset browser
+- Add local analysis of page images/icons/SVGs/assets.
+- Keep resource analysis separate from CSS rule matching.
+
+### P1-07 — Automated release pipeline
+- Add license/provenance checks, build, E2E, dist security scan, ZIP artifact, checksum, version tag, and release workflow.
+
+## P2 — advanced mode
+
+### P2-01 — Optional CDP/debugger mode
+- Evaluate a separately explained Advanced mode using `chrome.debugger`.
+- Do not add the permission to the default product without an explicit product/security decision.
+- Use it only for capabilities that materially require CDP.
+
+### P2-02 — True device emulation
+- If Advanced CDP mode is accepted, implement DPR/touch/UA/media/device emulation through the appropriate CDP domains.
+- Do not market viewport resizing alone as full device emulation.
+
+### P2-03 — Deeper forced pseudo-state inspection
+- Prefer browser/CDP support for robust forced pseudo states rather than fragile DOM hacks.
+
+### P2-04 — Extended accessibility audits
+- Expand beyond contrast/basic metadata while retaining clear automated-check limitations.
+
+### P2-05 — Firefox/Edge hardening
+- Start after Chrome behavior and packaging are stable.
+- Re-evaluate WXT/cross-browser packaging at this point if not already adopted.
+
+### P2-06 — Optional AI
+- Only after the local product is mature.
+- Must be explicit opt-in.
+- Show what DOM/CSS data leaves the browser.
+- Define redaction, privacy, and cost model before implementation.
+
+## Required verification for agent tasks
+
+For normal code changes:
+
+```bash
+npm run check
+npm test
+```
+
+When real Chrome behavior is affected:
+
+```bash
+npm run test:chrome
+```
+
+Also:
+- add regression coverage for engine/cascade/editing fixes;
+- verify no secrets, local profiles, credentials, or machine-specific paths are committed;
+- report any browser/security limitation rather than hiding it.
+
+## Recommended next task
+
+Start by auditing **P0-04 through P0-07** against the current engine. The research identifies accurate Applied CSS/cascade reasoning as the largest technical differentiator and risk.
